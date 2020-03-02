@@ -204,10 +204,20 @@ img {
   background-color: #FFC30C;
 }
 
-.task-title {
+.todo-title {
   width: 20em;
 }
 
-.task-item {
+.task-title {
   width: 16em;
+}
+
+.aside-checklist-item {
+  display: flex;
+  flex-direction: row;
+  margin-left: 2em;
+}
+
+.aside-font {
+  color: #FFFFFF
 }

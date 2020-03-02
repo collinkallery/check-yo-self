@@ -21,13 +21,15 @@
     <aside>
       <section class="make-task-section">
         <h2>Task Title</h2>
-        <input class="task-input task-title" type="text">
+        <input class="task-input todo-title" type="text">
+        <p class="aside-checklist-container">
+        </p>
         <h2>Task Item</h2>
         <div class="plus-button-container">
-          <input class="task-input task-item" type="text"><button class="plus-button">+</button>
+          <input class="task-input task-title" type="text"><button class="plus-button">+</button>
         </div>
-        <button class="aside-button">Make Task List</button>
-        <button class="aside-button">Clear All</button>
+        <button class="aside-button" id="make-tasklist-button">Make Task List</button>
+        <button class="aside-button" id="clear-all-button">Clear All</button>
       </section>
       <button class="aside-button">Filter by Urgency</button>
     </aside>
@@ -36,7 +38,7 @@
         <p>You have not made any tasks. Use the bar on the right to log a new one!</p>
       </div>
       <article class="tasks-container hidden">
-        <section class="task-card">
+        <!-- <section class="task-card">
           <h3>Task Title</h3>
           <p><img class="checkbox" src="assets/checkbox.svg">Some text</p>
           <p><img class="checkbox" src="assets/checkbox.svg">Some text. This is some significantly longer text. This paragraph should wrap around to the next line. Some text. This is some significantly longer text. This paragraph should wrap around
@@ -164,10 +166,14 @@
               <p class="image-caption">Delete</p>
             </div>
           </div>
-        </section>
+        </section> -->
       </article>
     </div>
   </div>
 </body>
+
+<script src="task.js"></script>
+<script src="todo-list.js"></script>
+<script src="main.js"></script>
 
 </html>
