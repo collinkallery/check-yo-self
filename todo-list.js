@@ -1,13 +1,14 @@
 class TodoList {
-  constructor(id, toDoTitle) {
+  constructor(id, randomId, toDoTitle, urgent, tasks) {
     this.id = id;
+    this.taskArrayId = randomId;
     this.title = toDoTitle;
-    this.urgent = false;
-    this.tasks = [];
+    this.urgent = urgent || false;
+    this.tasks = tasks || [];
   }
-  saveToStorage(newToDo) {
-    var stringifiedTodo = JSON.stringify(newToDo);
-    window.localStorage.setItem(`${newToDo.id}`, stringifiedTodo);
+  saveToStorage(toDoArray) {
+    var stringifiedTodo = JSON.stringify(toDoArray);
+    window.localStorage.setItem('to-do array', stringifiedTodo);
   }
   deleteFromStorage() {
 
