@@ -1,7 +1,7 @@
 class Task {
-  constructor(taskItem, id) {
+  constructor(taskItem, complete, id) {
     this.title = taskItem;
-    this.complete = false;
+    this.complete = complete || false;
     this.id = id;
   }
 }

@@ -16,20 +16,22 @@ asideChecklist.addEventListener('click', removeAsideItem);
 makeTasklistButton.addEventListener('click', instantiateToDo);
 clearAllButton.addEventListener('click', clearAllInputs);
 
+window.onload = retrieveFromStorage();
+
 function displayTaskItems() {
   if (taskItemInput.value === '') {
     plusButton.disabled = true;
     return;
   } else {
-  var newTask = new Task;
-  newTask.title = taskItemInput.value;
-  newTask.id = Date.now();
-  newToDo.tasks.push(newTask);
-  asideChecklist.innerHTML += `
+    var newTask = new Task;
+    newTask.title = taskItemInput.value;
+    newTask.id = Date.now();
+    newToDo.tasks.push(newTask);
+    asideChecklist.innerHTML += `
   <div class="aside-checklist-item">
     <img src="assets/delete.svg" id="${newTask.id}" class="delete-button"><p class="aside-font">${newTask.title}</p>
   </div>`
-  clearTaskItem();
+    clearTaskItem();
   }
 }
 
@@ -49,9 +51,9 @@ function clearAllInputs() {
     clearAllButton.disabled = true;
     return;
   } else {
-  toDoTitleInput.value = '';
-  taskItemInput.value = '';
-  asideChecklist.innerHTML = '';
+    toDoTitleInput.value = '';
+    taskItemInput.value = '';
+    asideChecklist.innerHTML = '';
   }
 }
 
@@ -59,21 +61,22 @@ function instantiateToDo() {
   if (toDoTitleInput.value === '' || asideChecklist.innerHTML === '') {
     makeTasklistButton.disabled = true;
   } else {
-  displayToDoPage();
-  newToDo.id = Date.now();
-  newToDo.title = toDoTitleInput.value;
-  toDoArray.push(newToDo);
-  renderToDo(newToDo);
-  newToDo.saveToStorage(newToDo);
-  resetInput();
-  return newToDo;
+    displayToDoPage();
+    newToDo.id = Date.now();
+    newToDo.taskArrayId = generateTaskArrayId();
+    newToDo.title = toDoTitleInput.value;
+    toDoArray.push(newToDo);
+    renderToDo(newToDo);
+    newToDo.saveToStorage(toDoArray);
+    resetInput();
+    return newToDo;
   }
 }
 
 function renderToDo(newToDo) {
-  tasksContainer.innerHTML += `<section class="task-card">
+  tasksContainer.innerHTML += `<section class="task-card" id="${newToDo.id}">
     <h3>${newToDo.title}</h3>
-    <div class="task-container" id="${newToDo.id}">
+    <div class="task-container" id="${newToDo.taskArrayId}">
     </div>
     <div class="task-image-container">
       <div class="card-img-1">
@@ -87,7 +90,7 @@ function renderToDo(newToDo) {
     </div>
   </section>
   `
-  var taskBox = document.getElementById(`${newToDo.id}`)
+  var taskBox = document.getElementById(`${newToDo.taskArrayId}`)
   for (var i = 0; i < newToDo.tasks.length; i++) {
     taskBox.innerHTML += `
     <p><img class="checkbox" src="assets/checkbox.svg">${newToDo.tasks[i].title}</p>
@@ -105,4 +108,36 @@ function resetInput() {
   toDoTitleInput.value = '';
   asideChecklist.innerHTML = '';
   newToDo = new TodoList;
+}
+
+function retrieveFromStorage() {
+  if (window.localStorage.length === 0) {
+    return;
+  } else {
+    displayToDoPage();
+    var temporaryArray = [];
+    var retrievedToDos = window.localStorage.getItem('to-do array');
+    var parsedToDo = JSON.parse(retrievedToDos);
+    for (var i = 0; i < parsedToDo.length; i++) {
+      var taskArray = [];
+      for (var j = 0; j < parsedToDo[i].tasks.length; j++) {
+        var newTask = new Task(parsedToDo[i].tasks[j].title, parsedToDo[i].tasks[j].complete, parsedToDo[i].tasks[j].id)
+        taskArray.push(newTask)
+      }
+      var newToDo = new TodoList(parsedToDo[i].id, parsedToDo[i].taskArrayId, parsedToDo[i].title, parsedToDo[i].urgent, taskArray);
+      temporaryArray.push(newToDo);
+    }
+    toDoArray = temporaryArray;
+    displayStorage();
+  }
+}
+
+function displayStorage() {
+  for (var i = 0; i < toDoArray.length; i++) {
+    renderToDo(toDoArray[i]);
+  }
+}
+
+function generateTaskArrayId() {
+  return Math.floor(Math.random() * 10000);
 }
