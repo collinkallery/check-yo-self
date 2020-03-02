@@ -5,8 +5,9 @@ class TodoList {
     this.urgent = false;
     this.tasks = [];
   }
-  saveToStorage() {
-
+  saveToStorage(newToDo) {
+    var stringifiedTodo = JSON.stringify(newToDo);
+    window.localStorage.setItem(`${newToDo.id}`, stringifiedTodo);
   }
   deleteFromStorage() {
 
