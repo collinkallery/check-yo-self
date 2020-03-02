@@ -6,6 +6,7 @@ var makeTasklistButton = document.querySelector('#make-tasklist-button');
 var noTasksPage = document.querySelector('.no-tasks-page');
 var tasksContainer = document.querySelector('.tasks-container');
 var deleteTaskButton = document.querySelector('.delete-button');
+var clearAllButton = document.querySelector('#clear-all-button');
 var newTask;
 var newToDo = new TodoList;
 var toDoArray = [];
@@ -13,8 +14,13 @@ var toDoArray = [];
 plusButton.addEventListener('click', displayTaskItems);
 asideChecklist.addEventListener('click', removeAsideItem);
 makeTasklistButton.addEventListener('click', instantiateToDo);
+clearAllButton.addEventListener('click', clearAllInputs);
 
 function displayTaskItems() {
+  if (taskItemInput.value === '') {
+    plusButton.disabled = true;
+    return;
+  } else {
   var newTask = new Task;
   newTask.title = taskItemInput.value;
   newTask.id = Date.now();
@@ -24,6 +30,7 @@ function displayTaskItems() {
     <img src="assets/delete.svg" id="${newTask.id}" class="delete-button"><p class="aside-font">${newTask.title}</p>
   </div>`
   clearTaskItem();
+  }
 }
 
 function clearTaskItem() {
@@ -37,15 +44,30 @@ function removeAsideItem() {
   }
 }
 
+function clearAllInputs() {
+  if (toDoTitleInput.value === '' && taskItemInput.value === '' && asideChecklist.innerHTML === '') {
+    clearAllButton.disabled = true;
+    return;
+  } else {
+  toDoTitleInput.value = '';
+  taskItemInput.value = '';
+  asideChecklist.innerHTML = '';
+  }
+}
 
 function instantiateToDo() {
+  if (toDoTitleInput.value === '' || asideChecklist.innerHTML === '') {
+    makeTasklistButton.disabled = true;
+  } else {
   displayToDoPage();
   newToDo.id = Date.now();
   newToDo.title = toDoTitleInput.value;
   toDoArray.push(newToDo);
   renderToDo(newToDo);
+  newToDo.saveToStorage(newToDo);
   resetInput();
   return newToDo;
+  }
 }
 
 function renderToDo(newToDo) {
