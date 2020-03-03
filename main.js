@@ -15,6 +15,7 @@ plusButton.addEventListener('click', displayTaskItems);
 asideChecklist.addEventListener('click', removeAsideItem);
 makeTasklistButton.addEventListener('click', instantiateToDo);
 clearAllButton.addEventListener('click', clearAllInputs);
+tasksContainer.addEventListener('click', checkTask);
 
 window.onload = retrieveFromStorage();
 
@@ -90,10 +91,20 @@ function renderToDo(newToDo) {
     </div>
   </section>
   `
-  var taskBox = document.getElementById(`${newToDo.taskArrayId}`)
   for (var i = 0; i < newToDo.tasks.length; i++) {
+    renderTask(newToDo.tasks[i], newToDo);
+  }
+}
+
+function renderTask(task, todo) {
+  var taskBox = document.getElementById(`${todo.taskArrayId}`)
+  if (task.complete === true) {
     taskBox.innerHTML += `
-    <p><img class="checkbox" src="assets/checkbox.svg">${newToDo.tasks[i].title}</p>
+    <p><img class="checkbox" id="${task.id}" data-checked="true" data-todo-id="${todo.id}" src="assets/checkbox-active.svg">${task.title}</p>
+    `
+  } else {
+    taskBox.innerHTML += `
+    <p><img class="checkbox" id="${task.id}" data-checked="false" data-todo-id="${todo.id}" src="assets/checkbox.svg">${task.title}</p>
     `
   }
 }
@@ -140,4 +151,28 @@ function displayStorage() {
 
 function generateTaskArrayId() {
   return Math.floor(Math.random() * 10000);
+}
+
+function checkTask() {
+  var checkbox = event.target;
+  console.log(event.target);
+  var currentTodo = findCurrentTodo(event.target.getAttribute('data-todo-id'));
+  if (checkbox.getAttribute('data-checked') === 'false') {
+    checkbox.setAttribute('data-checked', true);
+    checkbox.src = 'assets/checkbox-active.svg';
+    currentTodo.toggleTask(checkbox.id, true);
+  } else if (checkbox.getAttribute('data-checked') === 'true') {
+    checkbox.setAttribute('data-checked', false);
+    checkbox.src = 'assets/checkbox.svg';
+    currentTodo.toggleTask(checkbox.id, false);
+  }
+  currentTodo.saveToStorage(toDoArray);
+}
+
+function findCurrentTodo(todoId) {
+  for (var i = 0; i < toDoArray.length; i++) {
+    if (todoId == toDoArray[i].id) {
+      return toDoArray[i];
+    }
+  }
 }

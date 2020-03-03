@@ -16,8 +16,13 @@ class TodoList {
   updateToDo() {
 
   }
-  updateTask() {
-
+  toggleTask(taskNumber, enabled) {
+    for (var i = 0; i < this.tasks.length; i++) {
+      if (taskNumber == this.tasks[i].id) {
+        console.log('hi');
+        this.tasks[i].complete = enabled;
+      }
+    }
   }
   removeTask(taskId) {
     for (var i = 0; i < this.tasks.length; i++) {
