@@ -13,13 +13,14 @@ class TodoList {
   deleteFromStorage() {
 
   }
-  updateToDo() {
-
+  updateToDo(todoNumber, enabled) {
+    if (todoNumber == this.id) {
+      this.urgent = enabled;
+    }
   }
-  toggleTask(taskNumber, enabled) {
+  updateTask(taskNumber, enabled) {
     for (var i = 0; i < this.tasks.length; i++) {
       if (taskNumber == this.tasks[i].id) {
-        console.log('hi');
         this.tasks[i].complete = enabled;
       }
     }

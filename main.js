@@ -15,7 +15,7 @@ plusButton.addEventListener('click', displayTaskItems);
 asideChecklist.addEventListener('click', removeAsideItem);
 makeTasklistButton.addEventListener('click', instantiateToDo);
 clearAllButton.addEventListener('click', clearAllInputs);
-tasksContainer.addEventListener('click', checkTask);
+tasksContainer.addEventListener('click', checkButtons);
 
 window.onload = retrieveFromStorage();
 
@@ -81,7 +81,7 @@ function renderToDo(newToDo) {
     </div>
     <div class="task-image-container">
       <div class="card-img-1">
-        <img class="card-img urgent" src="assets/urgent.svg" alt="lightning bolt">
+        <img class="card-img urgent" id="${newToDo.id}" data-urgent="false" data-todo-id="${newToDo.id}" src="assets/urgent.svg" alt="lightning bolt">
         <p class="caption urgent-caption">Urgent</p>
       </div>
       <div class="card-img-2">
@@ -129,6 +129,7 @@ function retrieveFromStorage() {
     var temporaryArray = [];
     var retrievedToDos = window.localStorage.getItem('to-do array');
     var parsedToDo = JSON.parse(retrievedToDos);
+    console.log(parsedToDo)
     for (var i = 0; i < parsedToDo.length; i++) {
       var taskArray = [];
       for (var j = 0; j < parsedToDo[i].tasks.length; j++) {
@@ -150,21 +151,44 @@ function displayStorage() {
 }
 
 function generateTaskArrayId() {
-  return Math.floor(Math.random() * 10000);
+  return Math.floor(Math.random() * 100000);
+}
+
+function checkButtons() {
+  if (event.target.classList.contains('checkbox')) {
+    checkTask();
+  }
+  if (event.target.classList.contains('urgent')) {
+    checkUrgency();
+  }
 }
 
 function checkTask() {
   var checkbox = event.target;
-  console.log(event.target);
   var currentTodo = findCurrentTodo(event.target.getAttribute('data-todo-id'));
   if (checkbox.getAttribute('data-checked') === 'false') {
     checkbox.setAttribute('data-checked', true);
     checkbox.src = 'assets/checkbox-active.svg';
-    currentTodo.toggleTask(checkbox.id, true);
+    currentTodo.updateTask(checkbox.id, true);
   } else if (checkbox.getAttribute('data-checked') === 'true') {
     checkbox.setAttribute('data-checked', false);
     checkbox.src = 'assets/checkbox.svg';
-    currentTodo.toggleTask(checkbox.id, false);
+    currentTodo.updateTask(checkbox.id, false);
+  }
+  currentTodo.saveToStorage(toDoArray);
+}
+
+function checkUrgency() {
+  var urgent = event.target;
+  var currentTodo = findCurrentTodo(event.target.getAttribute('data-todo-id'));
+  if (urgent.getAttribute('data-urgent') === 'false') {
+    urgent.setAttribute('data-urgent', true);
+    urgent.src = 'assets/urgent-active.svg';
+    currentTodo.updateToDo(urgent.id, true);
+  } else if (urgent.getAttribute('data-urgent') === 'true') {
+    urgent.setAttribute('data-urgent', false);
+    urgent.src = 'assets/urgent.svg';
+    currentTodo.updateToDo(urgent.id, false);
   }
   currentTodo.saveToStorage(toDoArray);
 }
