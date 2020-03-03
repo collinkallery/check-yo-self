@@ -7,15 +7,20 @@ var noTasksPage = document.querySelector('.no-tasks-page');
 var tasksContainer = document.querySelector('.tasks-container');
 var deleteTaskButton = document.querySelector('.delete-button');
 var clearAllButton = document.querySelector('#clear-all-button');
+var filterUrgencyButton = document.querySelector('#filter-urgent-button');
 var newTask;
 var newToDo = new TodoList;
 var toDoArray = [];
+var urgentButton;
+var urgentClass;
+var dataUrgent;
 
 plusButton.addEventListener('click', displayTaskItems);
 asideChecklist.addEventListener('click', removeAsideItem);
 makeTasklistButton.addEventListener('click', instantiateToDo);
 clearAllButton.addEventListener('click', clearAllInputs);
 tasksContainer.addEventListener('click', buttonHandler);
+filterUrgencyButton.addEventListener('click', filterByUrgency);
 
 window.onload = retrieveFromStorage();
 
@@ -75,13 +80,14 @@ function instantiateToDo() {
 }
 
 function renderToDo(newToDo) {
-  tasksContainer.innerHTML += `<section class="task-card" id="${newToDo.id}">
+  renderUrgency(newToDo);
+  tasksContainer.innerHTML += `<section class="task-card ${urgentClass}" id="${newToDo.id}">
     <h3>${newToDo.title}</h3>
     <div class="task-container" id="${newToDo.taskArrayId}">
     </div>
     <div class="task-image-container">
       <div class="card-img-1">
-        <img class="card-img urgent" id="${newToDo.id}" data-urgent="false" src="assets/urgent.svg" alt="lightning bolt">
+        <img class="card-img urgent" id="${newToDo.id}" data-urgent="${dataUrgent}" src="${urgentButton}" alt="lightning bolt">
         <p class="caption urgent-caption">Urgent</p>
       </div>
       <div class="card-img-2">
@@ -106,6 +112,19 @@ function renderTask(task, todo) {
     taskBox.innerHTML += `
     <p><img class="checkbox" id="${task.id}" data-checked="false" data-todo-id="${todo.id}" src="assets/checkbox.svg">${task.title}</p>
     `
+  }
+}
+
+function renderUrgency(toDo) {
+  if (toDo.urgent === true) {
+    console.log(toDo);
+    urgentButton = 'assets/urgent-active.svg';
+    urgentClass = 'card-background-yellow';
+    dataUrgent = true;
+  } else {
+    urgentButton = 'assets/urgent.svg';
+    urgentClass = '';
+    dataUrgent = false;
   }
 }
 
@@ -185,12 +204,12 @@ function checkUrgency(matchingId) {
   var currentTodo = findCurrentTodo(matchingId);
   if (urgent.getAttribute('data-urgent') === 'false') {
     urgent.setAttribute('data-urgent', true);
-    urgent.closest('.task-card').classList.add('card-background');
+    urgent.closest('.task-card').classList.add('card-background-yellow');
     urgent.src = 'assets/urgent-active.svg';
     currentTodo.updateToDo(urgent.id, true);
   } else if (urgent.getAttribute('data-urgent') === 'true') {
     urgent.setAttribute('data-urgent', false);
-    urgent.closest('.task-card').classList.remove('card-background');
+    urgent.closest('.task-card').classList.remove('card-background-yellow');
     urgent.src = 'assets/urgent.svg';
     currentTodo.updateToDo(urgent.id, false);
   }
@@ -223,6 +242,15 @@ function findCurrentTodo(todoId) {
   for (var i = 0; i < toDoArray.length; i++) {
     if (todoId == toDoArray[i].id) {
       return toDoArray[i];
+    }
+  }
+}
+
+function filterByUrgency() {
+  var taskCards = Array.from(document.querySelectorAll('.task-card'));
+  for (var i = 0; i < taskCards.length; i++) {
+    if (!taskCards[i].classList.contains('card-background-yellow')) {
+      taskCards[i].classList.toggle('hidden');
     }
   }
 }
