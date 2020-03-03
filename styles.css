@@ -222,6 +222,10 @@ img {
   color: #FFFFFF
 }
 
-.card-background {
+.card-background-yellow {
   background-color: #FFE89D;
+}
+
+#filter-urgent-button:hover {
+  background-color: #EF4A23;
 }
