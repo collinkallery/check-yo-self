@@ -184,6 +184,10 @@ img {
   display: none;
 }
 
+.hide {
+  display: none;
+}
+
 .plus-button-container {
   display: flex;
   flex-direction: row;
@@ -227,5 +231,9 @@ img {
 }
 
 #filter-urgent-button:hover {
+  background-color: #EF4A23;
+}
+
+.urgent-background {
   background-color: #EF4A23;
 }

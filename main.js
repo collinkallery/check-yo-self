@@ -8,6 +8,7 @@ var tasksContainer = document.querySelector('.tasks-container');
 var deleteTaskButton = document.querySelector('.delete-button');
 var clearAllButton = document.querySelector('#clear-all-button');
 var filterUrgencyButton = document.querySelector('#filter-urgent-button');
+var searchInput = document.querySelector('.search-page-input');
 var newTask;
 var newToDo = new TodoList;
 var toDoArray = [];
@@ -21,6 +22,7 @@ makeTasklistButton.addEventListener('click', instantiateToDo);
 clearAllButton.addEventListener('click', clearAllInputs);
 tasksContainer.addEventListener('click', buttonHandler);
 filterUrgencyButton.addEventListener('click', filterByUrgency);
+searchInput.addEventListener('keyup', filterBySearch);
 
 window.onload = retrieveFromStorage();
 
@@ -82,7 +84,7 @@ function instantiateToDo() {
 function renderToDo(newToDo) {
   renderUrgency(newToDo);
   tasksContainer.innerHTML += `<section class="task-card ${urgentClass}" id="${newToDo.id}">
-    <h3>${newToDo.title}</h3>
+    <h3 class="card-title">${newToDo.title}</h3>
     <div class="task-container" id="${newToDo.taskArrayId}">
     </div>
     <div class="task-image-container">
@@ -141,7 +143,7 @@ function resetInput() {
 }
 
 function retrieveFromStorage() {
-  if (window.localStorage.length === 0) {
+  if (!window.localStorage.getItem('to-do array')) {
     return;
   } else {
     displayToDoPage();
@@ -248,9 +250,24 @@ function findCurrentTodo(todoId) {
 
 function filterByUrgency() {
   var taskCards = Array.from(document.querySelectorAll('.task-card'));
+  filterUrgencyButton.classList.toggle('urgent-background');
   for (var i = 0; i < taskCards.length; i++) {
     if (!taskCards[i].classList.contains('card-background-yellow')) {
       taskCards[i].classList.toggle('hidden');
     }
   }
 }
+
+function filterBySearch() {
+  var taskCards = Array.from(document.querySelectorAll('.task-card'));
+  for (var i = 0; i < taskCards.length; i++) {
+    var todoTitle = taskCards[i].querySelector('.card-title');
+    if (!todoTitle.innerText.includes(searchInput.value)) {
+      taskCards[i].classList.add('hide');
+    } else {
+      taskCards[i].classList.remove('hide');
+    }
+  }
+}
+
+//
