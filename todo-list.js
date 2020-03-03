@@ -10,8 +10,15 @@ class TodoList {
     var stringifiedTodo = JSON.stringify(toDoArray);
     window.localStorage.setItem('to-do array', stringifiedTodo);
   }
-  deleteFromStorage() {
-
+  deleteFromStorage(currentTodo, toDoArray) {
+    var retrievedToDos = window.localStorage.getItem('to-do array');
+    var parsedToDo = JSON.parse(retrievedToDos);
+    for (var i = 0; i < parsedToDo.length; i++) {
+      if (currentTodo.id == parsedToDo[i].id) {
+        toDoArray.splice(i, 1);
+        this.saveToStorage(toDoArray);
+      }
+    }
   }
   updateToDo(todoNumber, enabled) {
     if (todoNumber == this.id) {

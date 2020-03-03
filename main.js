@@ -15,7 +15,7 @@ plusButton.addEventListener('click', displayTaskItems);
 asideChecklist.addEventListener('click', removeAsideItem);
 makeTasklistButton.addEventListener('click', instantiateToDo);
 clearAllButton.addEventListener('click', clearAllInputs);
-tasksContainer.addEventListener('click', checkButtons);
+tasksContainer.addEventListener('click', buttonHandler);
 
 window.onload = retrieveFromStorage();
 
@@ -81,11 +81,11 @@ function renderToDo(newToDo) {
     </div>
     <div class="task-image-container">
       <div class="card-img-1">
-        <img class="card-img urgent" id="${newToDo.id}" data-urgent="false" data-todo-id="${newToDo.id}" src="assets/urgent.svg" alt="lightning bolt">
+        <img class="card-img urgent" id="${newToDo.id}" data-urgent="false" src="assets/urgent.svg" alt="lightning bolt">
         <p class="caption urgent-caption">Urgent</p>
       </div>
       <div class="card-img-2">
-        <img class="card-img delete" src="assets/delete.svg" alt="delete X">
+        <img class="card-img delete" id="${newToDo.id}" src="assets/delete.svg" alt="delete X">
         <p class="caption delete-caption">Delete</p>
       </div>
     </div>
@@ -129,7 +129,6 @@ function retrieveFromStorage() {
     var temporaryArray = [];
     var retrievedToDos = window.localStorage.getItem('to-do array');
     var parsedToDo = JSON.parse(retrievedToDos);
-    console.log(parsedToDo)
     for (var i = 0; i < parsedToDo.length; i++) {
       var taskArray = [];
       for (var j = 0; j < parsedToDo[i].tasks.length; j++) {
@@ -154,18 +153,21 @@ function generateTaskArrayId() {
   return Math.floor(Math.random() * 100000);
 }
 
-function checkButtons() {
+function buttonHandler() {
   if (event.target.classList.contains('checkbox')) {
-    checkTask();
+    checkTask(event.target.getAttribute('data-todo-id'));
   }
   if (event.target.classList.contains('urgent')) {
-    checkUrgency();
+    checkUrgency(event.target.id);
+  }
+  if (event.target.classList.contains('delete')) {
+    validateDelete(event.target.id);
   }
 }
 
-function checkTask() {
+function checkTask(matchingId) {
   var checkbox = event.target;
-  var currentTodo = findCurrentTodo(event.target.getAttribute('data-todo-id'));
+  var currentTodo = findCurrentTodo(matchingId);
   if (checkbox.getAttribute('data-checked') === 'false') {
     checkbox.setAttribute('data-checked', true);
     checkbox.src = 'assets/checkbox-active.svg';
@@ -178,19 +180,43 @@ function checkTask() {
   currentTodo.saveToStorage(toDoArray);
 }
 
-function checkUrgency() {
+function checkUrgency(matchingId) {
   var urgent = event.target;
-  var currentTodo = findCurrentTodo(event.target.getAttribute('data-todo-id'));
+  var currentTodo = findCurrentTodo(matchingId);
   if (urgent.getAttribute('data-urgent') === 'false') {
     urgent.setAttribute('data-urgent', true);
+    urgent.closest('.task-card').classList.add('card-background');
     urgent.src = 'assets/urgent-active.svg';
     currentTodo.updateToDo(urgent.id, true);
   } else if (urgent.getAttribute('data-urgent') === 'true') {
     urgent.setAttribute('data-urgent', false);
+    urgent.closest('.task-card').classList.remove('card-background');
     urgent.src = 'assets/urgent.svg';
     currentTodo.updateToDo(urgent.id, false);
   }
   currentTodo.saveToStorage(toDoArray);
+}
+
+function validateDelete(matchingId) {
+  var currentTodo = findCurrentTodo(matchingId);
+  for (var i = 0; i < toDoArray.length; i++) {
+    if (matchingId == toDoArray[i].id) {
+      var tasks = currentTodo.tasks;
+      var numberChecked = tasks.filter(function(task) {
+        return task.complete === false;
+      });
+      if (numberChecked.length > 0) {
+        console.log('you still have unchecked items')
+      } else {
+        deleteCard(currentTodo, toDoArray);
+      }
+    }
+  }
+}
+
+function deleteCard(currentTodo, toDoArray) {
+  event.target.closest('.task-card').remove();
+  currentTodo.deleteFromStorage(currentTodo, toDoArray);
 }
 
 function findCurrentTodo(todoId) {
