@@ -11,3 +11,7 @@ Like said above, there was a large emphasis in this project on functionality. Th
 ## The Application
 
 Below are a few screenshots of the final product. 
+
+![Screenshot 1](https://i.imgur.com/XYwRhhp.png)
+
+![Screenshot 2](https://i.imgur.com/PUSwd8u.png)
