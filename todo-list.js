@@ -1,26 +1,26 @@
 class TodoList {
-  constructor(id, randomId, toDoTitle, urgent, tasks) {
+  constructor(id, randomId, todoTitle, urgent, tasks) {
     this.id = id;
     this.taskArrayId = randomId;
-    this.title = toDoTitle;
+    this.title = todoTitle;
     this.urgent = urgent || false;
     this.tasks = tasks || [];
   }
-  saveToStorage(toDoArray) {
-    var stringifiedTodo = JSON.stringify(toDoArray);
+  saveToStorage(todoArray) {
+    var stringifiedTodo = JSON.stringify(todoArray);
     window.localStorage.setItem('to-do array', stringifiedTodo);
   }
-  deleteFromStorage(currentTodo, toDoArray) {
-    var retrievedToDos = window.localStorage.getItem('to-do array');
-    var parsedToDo = JSON.parse(retrievedToDos);
+  deleteFromStorage(currentTodo, todoArray) {
+    var retrievedTodos = window.localStorage.getItem('to-do array');
+    var parsedTodo = JSON.parse(retrievedTodos);
     for (var i = 0; i < parsedToDo.length; i++) {
-      if (currentTodo.id == parsedToDo[i].id) {
-        toDoArray.splice(i, 1);
-        this.saveToStorage(toDoArray);
+      if (currentTodo.id == parsedTodo[i].id) {
+        todoArray.splice(i, 1);
+        this.saveToStorage(todoArray);
       }
     }
   }
-  updateToDo(todoNumber, enabled) {
+  updateTodo(todoNumber, enabled) {
     if (todoNumber == this.id) {
       this.urgent = enabled;
     }
