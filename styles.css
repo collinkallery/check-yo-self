@@ -3,9 +3,9 @@
 }
 
 body {
+  height: 100%;
   margin: 0;
   width: 100%;
-  height: 100%;
 }
 
 header {
@@ -20,57 +20,53 @@ header {
 }
 
 aside {
-  width: 30rem;
   background-color: #587A8A;
   padding-right: 1em;
+  width: 30rem;
 }
 
 .parent-task {
   width: 90%;
-  /* height: 100vw; */
   background-color: #F3F6F7;
-  /* display: flex;
-  justify-content: center;
-  align-items: center; */
 }
 
 .no-tasks-page {
-  width: 59rem;
-  height: 100vw;
   display: flex;
+  height: 100vw;
   justify-content: center;
   padding-top: 15em;
+  width: 59rem;
 }
 
 .tasks-container {
-  width: 95%;
-  column-width: 10em;
-  column-count: 2;
   background-color: #F3F6F7;
+  column-count: 2;
+  column-width: 10em;
+  width: 95%;
 }
 
 h1 {
-  text-transform: uppercase;
-  display: inline-block;
   color: #FFFFFF;
-  font-weight: 800;
-  margin: .3em;
-  letter-spacing: .07em;
+  display: inline-block;
   font-size: 2.5em;
+  font-weight: 800;
+  letter-spacing: .07em;
+  margin: .3em;
+  text-transform: uppercase;
 }
 
 h2 {
   color: white;
-  font-weight: 400;
   font-size: 1em;
+  font-weight: 400;
   margin: 1.5em 1.5em .5em 2em;
 }
 
 h3 {
-  margin: .5em 0 .5em 0;
   border-bottom: .05em solid #C7D3D8;
-  padding-bottom: 1em;
   color: #1f1f3d;
+  margin: .5em 0 .5em 0;
+  padding-bottom: 1em;
 }
 
 .search-page-container {
@@ -78,20 +74,20 @@ h3 {
 }
 
 .search-page-input {
-  padding: .75em .75em .75em 4em;
-  width: 30rem;
-  height: 1rem;
-  margin: 1em;
   background-image: url('assets/search.svg');
   background-repeat: no-repeat;
-  font-size: 1em;
   border-radius: .5em;
+  font-size: 1em;
+  height: 1rem;
+  margin: 1em;
+  padding: .75em .75em .75em 4em;
+  width: 30rem;
 }
 
 .make-task-section {
+  border-bottom: .08em solid #1F1F3D;
   display: flex;
   flex-direction: column;
-  border-bottom: .08em solid #1F1F3D;
 }
 
 .card-img,
@@ -108,25 +104,25 @@ img {
 }
 
 .task-input {
-  margin-left: 2em;
-  font-size: 1em;
-  padding: 1em;
-  border-radius: .5em;
   border: .1em solid #1F1F3D;
+  border-radius: .5em;
+  font-size: 1em;
+  margin-left: 2em;
   outline: none;
+  padding: 1em;
 }
 
 .aside-button {
   background-color: #1F1F3D;
-  color: #FFFFFF;
-  font-weight: 800;
-  font-size: 1.3em;
-  width: 17em;
   border: none;
   border-radius: .2em;
-  padding: .5em;
+  color: #FFFFFF;
+  font-size: 1.3em;
+  font-weight: 800;
   margin: 1em 1em 1em 1.5em;
   outline: none;
+  padding: .5em;
+  width: 17em;
 }
 
 .aside-button:hover {
@@ -135,13 +131,13 @@ img {
 }
 
 .task-card {
+  background: #FAFDFF;
+  border: .05em solid #C7D3D8;
   display: inline-block;
+  font-size: 1em;
   margin: 2em;
   padding: 1em 2em;
   width: 75%;
-  background: #FAFDFF;
-  border: .05em solid #C7D3D8;
-  font-size: 1em;
 }
 
 .task-image-container {
@@ -194,14 +190,14 @@ img {
 }
 
 .plus-button {
+  background-color: #1F1F3D;
+  border: none;
+  border-radius: .25em;
+  color: #FFFFFF;
   font-size: 1.75em;
   margin-left: .5em;
-  border-radius: .25em;
-  background-color: #1F1F3D;
-  color: #FFFFFF;
-  border: none;
-  width: 1.7em;
   outline: none;
+  width: 1.7em;
 }
 
 .plus-button:hover {
